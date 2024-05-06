@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<style>
+  
+  .button {
+  border: none;  
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button1 {background-color: #4CAF50;} /* Green */
+.button2 {background-color: #008CBA;} /* Blue */
+* {box-sizing: border-box}
+
+/* Set height of body and the document to 100% */
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial;
+  background-color: #0B5345;
+}
+
+/* Style tab links */
+.tablink { 
+  background-color: #555;
+  color: white;
+  /*float: left;*/
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px 8px;
+  font-size: 17px;
+  width: 10%;
+}
+
+.tablink:hover {
+  background-color: #777;
+}
+
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+  color: white;
+  display: none;
+  padding: 100px 20px;
+  height: 100%;
+}
+
+#Home {background-color: #0B5345;} 
+#Performance Results {background-color: #0B5345;}
+#Data Science {background-color: #0B5345;}
+#HTML Validation Results {background-color: #0B5345;}
+#Web Page Audit Results {background-color: #0B5345;}
+#Broken Links and Images {background-color: #0B5345;}
+#Automation Run Results {background-color: #0B5345;}
+#Selenium Grid {background-color: #0B5345;}
+#Jenkins {background-color: #0B5345;}
+#Rally {background-color: #0B5345;}
+#HTML Validator Tool {background-color: #0B5345;}
+#GitHub {background-color: #0B5345;}
+#Data analytics {background-color: #0B5345;}
+#Notebook {background-color: #0B5345;}
+#Automation Trigger {background-color: #0B5345;}
+#MDS QA App {background-color: #0B5345;}
+#Audit Tool {background-color: #0B5345;}
+#Postman {background-color: #0B5345;}
+#XSS Payloads {background-color: #0B5345;}
+#SQL Payloads {background-color: #0B5345;}
+#Link Checker {background-color: #0B5345;}
+
+</style>
+</head>
+<body>
+ 
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="openPage('Home', this, '#0B5345')" id="defaultOpen">Home</button>  
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="openPage('Performance Results', this, '#0B5345')">Performance Results</button>
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="openPage('Data Science', this, '#0B5345')">Data Science</button>
+  
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="openPage('HTML Validation Results', this, '#0B5345')">HTML Validation</button>
+  
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="openPage('Web Page Audit Results', this, '#0B5345')">Web Page Audit</button>
+  
+  
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="openPage('Broken Links and Images', this, '#0B5345')">Broken Links/Images</button>  
+  
+  
+<button class="tablink" style="border: 4px solid #0B5345;"  onclick="openPage('Automation Run Results', this, '#0B5345')">Automation Results</button>
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="window.open('http://10.43.10.207:443/grid/console','_blank');">Selenium Grid</button>
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="window.open('http://127.0.0.1:8000/','_blank');">Jenkins</button>
+<button class="tablink" style="border: 4px solid #0B5345;"  onclick="window.open('https://rally1.rallydev.com/#/251355562340d/dashboard','_blank');">Rally</button>
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="window.open('https://validator.w3.org/nu/','_blank');">HTML Validator Tool</button>
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="window.open('https://github.worldpay.com/','_blank');">GitHub</button>
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="openPage('Data analytics', this, '#0B5345')">Data analytics</button>
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="openPage('Notebook', this, '#0B5345')">Notebook</button>
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="openPage('Automation Trigger', this, '#0B5345')"> Automation Trigger</button>
+<button class="tablink" style="border: 4px solid #0B5345;" onclick="window.open('https://pagespeed.web.dev/','_blank');"> Audit Tool</button>
+ <button class="tablink" style="border: 4px solid #0B5345;" onclick="window.open('https://www.postman.com/','_blank');"> Postman</button>
+ <button class="tablink" style="border: 4px solid #0B5345;" onclick="openPage('MDS QA App', this, '#0B5345')"> MDS QA App</button>
+ <button class="tablink"  style="border: 4px solid #0B5345;" onclick="openPage('Assigned Story', this, '#0B5345')"> Assigned Story</button>
+ <button class="tablink" style="border: 4px solid #0B5345;" onclick="openPage('XSS Payloads', this, '#0B5345')"> XSS Payloads</button>
+  <button class="tablink" style="border: 4px solid #0B5345;" onclick="openPage('SQL Payloads', this, '#0B5345')"> SQL Payloads</button>
+  <button class="tablink" style="border: 4px solid #0B5345;" onclick="window.open('https://validator.w3.org/checklink','_blank');"> Link Checker</button>
+  
+  <button class="tablink" style="border: 4px solid #0B5345;"  onclick="window.open('https://rally1.rallydev.com/#/251355562340d/dashboard?expandApp=512375822576','_blank');">Assigned Story</button>
+  <button class="tablink" style="border: 4px solid #0B5345;"  onclick="window.open('https://rally1.rallydev.com/#/251355562340d/dashboard?expandApp=375289517040','_blank');">My Tasks</button>
+ <button class="tablink" style="border: 4px solid #0B5345;"  onclick="window.open('https://rally1.rallydev.com/#/251355562340d/dashboard?expandApp=375289517064','_blank');">In-Comp UserStory</button>
+ 
+  <button class="tablink" style="border: 4px solid #0B5345;"  onclick="window.open('https://rally1.rallydev.com/#/251355562340d/dashboard?expandApp=458241510732','_blank');">Execution Result</button>
+ 
+
+  <button class="tablink" style="border: 4px solid #0B5345;"  onclick="window.open('https://fisglobal-my.sharepoint.com/:x:/r/personal/joshi_cleetus_fisglobal_com/_layouts/15/Doc.aspx?sourcedoc=%7B7D8BE425-B2BE-440E-9AB2-7C514157A0F2%7D&file=Solution.xlsx&action=default&mobileredirect=true','_blank');">Workspace</button>
+ 
+  
+
+<div id="Home" class="tabcontent">
+  <img src="home.PNG" height="100%" width="100%" title="Home"></img> 
+</div>
+
+<div id="Performance Results" class="tabcontent">
+ <img src="Summary.PNG" height="100%" width="100%" title="Iframe Example"></img>
+  <img src="Response Time Graph.PNG" height="100%" width="100%" title="Iframe Example"></img>
+<img src="Aggregate Graph.PNG" height="100%" width="100%" title="Iframe Example"></img>
+</div>
+
+<div id="Data Science" class="tabcontent">
+  <img src="Defects Summary.PNG" height="100%" width="100%" title="Iframe Example"></img>
+ <img src="Defect Priority.PNG" height="100%" width="100%" title="Iframe Example"></img>
+</div>
+  
+  <div id="HTML Validation Results" class="tabcontent">
+  <iframe src="html.png" height="100%" width="100%" title="Iframe Example"></iframe>
+</div>
+  
+  <div id="Web Page Audit Results" class="tabcontent">
+ <img src="PageAudit.PNG" height="100%" width="100%" title="Iframe Example"></img>
+</div>
+  
+  <div id="Broken Links and Images" class="tabcontent">
+  <img src="Links.PNG" height="100%" width="100%" ></img>
+  <img src="Images.PNG" height="100%" width="100%" ></img>
+  <img src="Port.PNG" height="100%" width="100%" ></img>
+</div>
+  
+  <div id="Automation Run Results" class="tabcontent">
+     <img src="Capture.PNG" height="100%" width="100%" title="Iframe Example"></img>
+     <img src="Data.PNG" height="100%" width="100%" title="Iframe Example"></img>
+ 
+    
+</div>
+  
+  <div id="Selenium Grid" class="tabcontent">
+    
+ <embed src="http://10.43.10.207:443/grid/console" width=200 height=200 />
+</div>
+  
+  <div id="Jenkins" class="tabcontent">
+  <a href="http://localhost:8000/" height="100%" width="100%" title="Iframe Example"></a>
+</div>
+  
+  <div id="Rally" class="tabcontent">
+ <a href="https://rally1.rallydev.com/#/251355562340d/dashboard" height="100%" width="100%" title="Iframe Example"></a>
+</div>
+  
+  <div id="HTML Validator Tool" class="tabcontent">
+ <iframe src="https://validator.w3.org/nu/" height="100%" width="100%" title="Iframe Example"></iframe>
+</div>
+  
+  <div id="GitHub" class="tabcontent">
+ <a href="https://github.worldpay.com/" height="100%" width="100%" title="Iframe Example"></a>
+</div>
+  
+  <div id="Data analytics" class="tabcontent">
+  <iframe src="http://localhost:3422/" height="100%" width="100%" title="Iframe Example"></iframe>
+</div>
+
+ 
+  <div id="Notebook" class="tabcontent"> 
+ <iframe src="https://jupyter.org/try-jupyter/lab/?path=notebooks%2FIntro.ipynb" height="100%" width="100%" title="Iframe Example"></iframe>
+</div>
+  
+    <div id="Automation Trigger" class="tabcontent">
+ 
+  <p>Note : Below suite runs from Jenkins!!!</p>
+      <button class="button button1" onclick="window.open('http://admin:a56ba68814b04df192e9ff1173506820@127.0.0.1:8000/job/MDS%20Regression%20-%20GitHub/build?token=2222','_blank');">Run Regression Suite >> </button><br/><br/><br/><br/>
+      <button class="button button2" onclick="window.open('http://admin:a56ba68814b04df192e9ff1173506820@127.0.0.1:8000/job/MDS%20Performance%20Test/build?token=3333','_blank');">Run Performance Test Suite >></button><br/><br/><br/><br/>
+      <button class="button button1">Run Smoke Test Suite >></button>
+      <img src="A.PNG" height="100%" width="100%" title="Iframe Example"></img>
+      
+</div>
+  
+    <div id="MDS QA App" class="tabcontent">
+  <iframe src="https://login8-uat.fiscloudservices.com/idp/us_worldpay_fis_int/?ClientID=NP.INT01.SP.STAGE.FLO.MDS" height="100%" width="100%" title="Iframe Example"></iframe>
+</div>
+  
+      <div id="Audit Tool" class="tabcontent">
+  <a href="https://pagespeed.web.dev/" height="100%" width="100%" title="Iframe Example"></a>
+</div>
+  
+      <div id="Postman" class="tabcontent">
+  <iframe src="https://www.postman.com/" height="100%" width="100%" title="Iframe Example"></iframe>
+</div>
+
+<div id="Link Checker" class="tabcontent">
+  <iframe src="https://validator.w3.org/checklink" height="100%" width="100%" title="Iframe Example"></iframe>
+</div>
+
+<div id="SQL Payloads" class="tabcontent">
+  <iframe src="" height="100%" width="100%" title="Iframe Example"></iframe>
+</div>
+
+
+
+ <div id="Workspace" class="tabcontent">
+ <iframe src="https://fisglobal-my.sharepoint.com/:x:/r/personal/joshi_cleetus_fisglobal_com/_layouts/15/Doc.aspx?sourcedoc=%7B7D8BE425-B2BE-440E-9AB2-7C514157A0F2%7D&file=Solution.xlsx&action=default&mobileredirect=true" height="100%" width="100%" title="Iframe Example"></iframe>
+</div>
+ 
+
+<script>
+function openPage(pageName,elmnt,color) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].style.backgroundColor = "";
+  }
+  document.getElementById(pageName).style.display = "block";
+  elmnt.style.backgroundColor = color;
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+   
+</body>
+</html> 
