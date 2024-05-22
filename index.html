@@ -11,21 +11,22 @@
             height: 100%;
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
-            background-color: #0B5345;
+            background-color: #E0EBFF; /* Matching color with logo */
             text-align: center;
+            color: #1F3A93; /* Navy Blue */
         }
 
         h1 {
-            color: #FFFFFF;
-            text-shadow: 2px 2px #000000;
+            color: #1F3A93; /* Navy Blue */
+            text-shadow: 2px 2px #CCCCCC;
             margin-top: 20px;
         }
 
         h2 {
-            color: #FFFFFF;
+            color: #1F3A93; /* Navy Blue */
             text-align: left;
             margin-left: 20px;
-            text-shadow: 1px 1px #000000;
+            text-shadow: 1px 1px #CCCCCC;
         }
 
         .button, .tablink {
@@ -38,15 +39,16 @@
             font-size: 16px;
             margin: 10px;
             cursor: pointer;
-            width: 200px;
-            height: 50px;
-            background-color: #2E8B57;
+            width: auto; /* Adjusted width to fit text */
+            height: auto; /* Adjusted height to fit text */
+            background-color: #3498DB; /* Light Blue */
             border-radius: 5px;
             transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .tablink:hover {
-            background-color: #3CB371;
+            background-color: #2C3E50; /* Darker Navy Blue */
             transform: scale(1.05);
         }
 
@@ -105,11 +107,25 @@
         tr:nth-child(even) {
             background-color: #dddddd;
         }
+
+        .logo-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .logo-container img {
+            width: 100px; /* Adjusted width for smaller logo */
+            height: auto;
+        }
     </style>
 </head>
 <body>
 
-    <img src="blulogo.jpg" alt="Blu Logo" width="200" height="100"> 
+    <div class="logo-container">
+        <img src="https://raw.githubusercontent.com/Shilpachimad/Blu/main/blulogo.JPG" alt="Blu Logo">
+    </div>
 
     <h1>blu Ticket System for Service Desk and IT</h1>
     <h2>MTD Tickets</h2>
