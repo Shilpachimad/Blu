@@ -1,166 +1,195 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<style>
+  * {
+  box-sizing: border-box;
+}
 
-        /* Create two equal columns that floats next to each other */
-        .column {
-            float: left;
-            width: 100%;
-            padding: 10px;
-        }
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 100%;
+  padding: 10px;
+ 
+}
 
-        /* Clear floats after the columns */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+  .button {
+  border: none;  
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
 
-        .button {
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
+.button1 {background-color: #4CAF50;} /* Green */
+.button2 {background-color: #008CBA;} /* Blue */
+* {box-sizing: border-box}
 
-        .button1 {
-            background-color: #4CAF50;
-        }
+/* Set height of body and the document to 100% */
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial;
+  background-color: #0B5345;
+}
 
-        .button2 {
-            background-color: #008CBA;
-        }
+/* Style tab links */
+.tablink { 
+  background-color: #555;
+  color: white;
+  /*float: left;*/
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px 8px;
+  font-size: 17px;
+  width: 10%;
+}
 
-        * {
-            box-sizing: border-box;
-        }
+.tablink:hover {
+  background-color: #777;
+}
 
-        /* Set height of body and the document to 100% */
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: Arial;
-            background-color: #0B5345;
-        }
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+  color: white;
+  display: none;
+  padding: 100px 20px;
+  height: 100%;
+}
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
 
-        /* Style tab links */
-        .tablink {
-            background-color: #555;
-            color: white;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 5px 8px;
-            font-size: 17px;
-            width: 10%;
-        }
+.flip-card {
+  background-color: transparent;
+  width: 700px;
+  height: 200px;
+  perspective: 1000px;
+}
 
-        .tablink:hover {
-            background-color: #777;
-        }
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
 
-        /* Style the tab content (and add height:100% for full page content) */
-        .tabcontent {
-            color: white;
-            display: none;
-            padding: 100px 20px;
-            height: 100%;
-        }
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
 
-        .flip-card {
-            background-color: transparent;
-            width: 700px;
-            height: 200px;
-            perspective: 1000px;
-        }
+.flip-card-front {
+  background-color: #bbb;
+  color: black;
+}
 
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        }
+.flip-card-back {
+  background-color: #2980b9;
+  color: white;
+  transform: rotateY(180deg);
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
 
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
 
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-        }
-
-        .flip-card-front {
-            background-color: #bbb;
-            color: black;
-        }
-
-        .flip-card-back {
-            background-color: #2980b9;
-            color: white;
-            transform: rotateY(180deg);
-        }
-
-        table {
-            font-family: Arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-        }
-
-        #Home, #Performance\ Results, #Data\ Science, #HTML\ Validation\ Results, #Web\ Page\ Audit\ Results, 
-        #Broken\ Links\ and\ Images, #Automation\ Run\ Results, #Selenium\ Grid, #Jenkins, #Rally, 
-        #HTML\ Validator\ Tool, #GitHub, #Data\ analytics, #Notebook, #Automation\ Trigger, #MDS\ QA\ App, 
-        #Audit\ Tool, #Postman, #XSS\ Payloads, #SQL\ Payloads, #Link\ Checker {
-            background-color: #0B5345;
-        }
-    </style>
+tr:nth-child(even) {
+ 
+}
+#Home {background-color: #0B5345;} 
+#Performance Results {background-color: #0B5345;}
+#Data Science {background-color: #0B5345;}
+#HTML Validation Results {background-color: #0B5345;}
+#Web Page Audit Results {background-color: #0B5345;}
+#Broken Links and Images {background-color: #0B5345;}
+#Automation Run Results {background-color: #0B5345;}
+#Selenium Grid {background-color: #0B5345;}
+#Jenkins {background-color: #0B5345;}
+#Rally {background-color: #0B5345;}
+#HTML Validator Tool {background-color: #0B5345;}
+#GitHub {background-color: #0B5345;}
+#Data analytics {background-color: #0B5345;}
+#Notebook {background-color: #0B5345;}
+#Automation Trigger {background-color: #0B5345;}
+#MDS QA App {background-color: #0B5345;}
+#Audit Tool {background-color: #0B5345;}
+#Postman {background-color: #0B5345;}
+#XSS Payloads {background-color: #0B5345;}
+#SQL Payloads {background-color: #0B5345;}
+#Link Checker {background-color: #0B5345;}
+https://github.com/Shilpachimad/Blu/blob/main/index.html
+</style>
 </head>
 <body>
-    <img src="https://github.com/Shilpachimad/Blu/blob/main/blulogo.JPG" alt="Blu Logo">
-    
-    <h1>blu Ticket System for service desk and IT</h1>
-    <h1>MTD Tickets</h1>
-    <button class="tablink" id="Snowflake Ticket" style="border: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/4/create/11', '_blank');">Snowflake Ticket</button>
-    <button class="tablink" id="Segment distribution request Ticket" style="border: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/18', '_blank');">Segment distribution request Ticket</button>
-    <button class="tablink" id="Segment distribution delay inquiry Ticket" style="border: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/17', '_blank');">Segment distribution delay inquiry Ticket</button>
-    <button class="tablink" id="Custom segment request Ticket" style="border: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/10', '_blank');">Custom segment request Ticket</button>
-    <button class="tablink" id="blu. Access request Ticket" style="border: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/5', '_blank');">blu. Access request Ticket</button>
-    <button class="tablink" id="blu. Error issue Ticket" style="border: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/36', '_blank');">blu. Error issue Ticket</button>
-    <button class="tablink" id="Pixel request form Ticket" style="border: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/15', '_blank');">Pixel request form Ticket</button>
-    
-    <h1>Service Desk Tickets</h1>
-    <button class="tablink" id="Tableau Ticket" style="border: solid #0B5345;" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0', '_blank');">Tableau Ticket</button>
-    <button class="tablink" id="Github Ticket" style="border: solid #0B5345;" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0', '_blank');">Github Ticket</button>
-    <button class="tablink" id="VPN / VDO forti Client set up Ticket" style="border: solid #0B5345;" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0', '_blank');">VPN / VDO forti Client set up Ticket</button>
-    <button class="tablink" id="BlueDot issues Ticket" style="border: solid #0B5345;" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0', '_blank');">BlueDot issues Ticket</button>
+
+ <!DOCTYPE html>
+<html>
+<head>
+<style>
+h1 {text-align: center;
+   color: white;}
+</style>
+</head>
+<body>
+
+ <n></n>
+</body>
+</html>
+
+ 
+<img src="https://github.com/Shilpachimad/Blu/blob/main/blulogo.JPG"> 
+
+
+ 
+
+<h1>blu Ticket System for service desk and IT</h1>
+
+ <h1>MTD Tickets</h1>
+<button class="tablink" id="Snowflake Ticket" style="border: width=350px: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/4/create/11','_blank');">Snowflake Ticket</button> 
+<button class="tablink" id=" Segment distribution request Ticket" style="border: width=350px: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/18','_blank');">Segment distribution request Ticket</button> 
+<button class="tablink" id=" Segment distribution delay inquiry Ticket" style="border: width=350px: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/17','_blank');">Segment distribution delay inquiry  Ticket</button> 
+<button class="tablink" id="Custom segment request Ticket" style="border: width=350px: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/10','_blank');">Custom segment request Ticket</button> 
+<button class="tablink" id="blu. Access request Ticket" style="border: width=350px: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/5','_blank');">blu. Access request Ticket</button> 
+<button class="tablink" id="blu. Error issue Ticket" style="border: width=350px: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/36','_blank');">blu. Error issue Ticket</button>
+<button class="tablink" id="Pixel request form Ticket" style="border: width=350px: solid #0B5345;" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/15','_blank');">Pixel request form Ticket</button>
+
+
+ <h1>Service Desk Tickets</h1>
+<button class="tablink" id="Tableau Ticket"   style="border:  width= 350px: solid #0B5345;" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Tableau   Ticket</button>
+<button class="tablink" id="Github Ticket"   style="border: width=350px: solid #0B5345;" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Github     Ticket</button>
+<button class="tablink" id="VPN / VDO forti Client set up Ticket"   style="border:  width= 350px: solid #0B5345;" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">VPN / VDO forti Client set up   Ticket</button>
+<button class="tablink" id="BlueDot issues Ticket"   style="border: width=350px: solid #0B5345;" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">BlueDot issues Ticket</button>
+
 </body>
 </html>
