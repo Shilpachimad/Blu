@@ -92,289 +92,388 @@
 </script>
 
 
-    <script type="module">
+		<script type="module">
 
-        import * as THREE from 'three';
+			import * as THREE from 'three';
 
-        import Stats from 'three/addons/libs/stats.module.js';
+			import Stats from 'three/addons/libs/stats.module.js';
 
-        import { FirstPersonControls } from 'three/addons/controls/FirstPersonControls.js';
-        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-        import { ShadowMapViewer } from 'three/addons/utils/ShadowMapViewer.js';
+			import { FirstPersonControls } from 'three/addons/controls/FirstPersonControls.js';
+			import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+			import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+			import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+			import { ShadowMapViewer } from 'three/addons/utils/ShadowMapViewer.js';
 
-        const SHADOW_MAP_WIDTH = 2048, SHADOW_MAP_HEIGHT = 1024;
+			const SHADOW_MAP_WIDTH = 2048, SHADOW_MAP_HEIGHT = 1024;
 
-        let SCREEN_WIDTH = window.innerWidth;
-        let SCREEN_HEIGHT = window.innerHeight;
-        const FLOOR = - 250;
+			let SCREEN_WIDTH = window.innerWidth;
+			let SCREEN_HEIGHT = window.innerHeight;
+			const FLOOR = - 250;
 
-        let camera, controls, scene, renderer;
-        let container, stats;
+			let camera, controls, scene, renderer;
+			let container, stats;
 
-        const NEAR = 10, FAR = 3000;
+			const NEAR = 10, FAR = 3000;
 
-        let mixer;
+			let mixer;
 
-        const morphs = [];
+			const morphs = [];
 
-        let light;
-        let lightShadowMapViewer;
+			let light;
+			let lightShadowMapViewer;
 
-        const clock = new THREE.Clock();
+			const clock = new THREE.Clock();
 
-        let showHUD = false;
+			let showHUD = false;
 
-        init();
+			init();
 
-        function init() {
+			function init() {
 
-            container = document.createElement( 'div' );
-            document.body.appendChild( container );
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
 
-            // CAMERA
+				// CAMERA
 
-            camera = new THREE.PerspectiveCamera( 23, SCREEN_WIDTH / SCREEN_HEIGHT, NEAR, FAR );
-            camera.position.set( 700, 50, 1900 );
+				camera = new THREE.PerspectiveCamera( 23, SCREEN_WIDTH / SCREEN_HEIGHT, NEAR, FAR );
+				camera.position.set( 700, 50, 1900 );
 
-            // SCENE
+				// SCENE
 
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color( 0x59472b );
-            scene.fog = new THREE.Fog( 0x59472b, 1000, FAR );
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0x59472b );
+				scene.fog = new THREE.Fog( 0x59472b, 1000, FAR );
 
-            // LIGHTS
+				// LIGHTS
 
-            const ambient = new THREE.AmbientLight( 0xffffff );
-            scene.add( ambient );
+				const ambient = new THREE.AmbientLight( 0xffffff );
+				scene.add( ambient );
 
-            light = new THREE.DirectionalLight( 0xffffff, 3 );
-            light.position.set( 0, 1500, 1000 );
-            light.castShadow = true;
-            light.shadow.camera.top = 2000;
-            light.shadow.camera.bottom = - 2000;
-            light.shadow.camera.left = - 2000;
-            light.shadow.camera.right = 2000;
-            light.shadow.camera.near = 1200;
-            light.shadow.camera.far = 2500;
-            light.shadow.bias = 0.0001;
+				light = new THREE.DirectionalLight( 0xffffff, 3 );
+				light.position.set( 0, 1500, 1000 );
+				light.castShadow = true;
+				light.shadow.camera.top = 2000;
+				light.shadow.camera.bottom = - 2000;
+				light.shadow.camera.left = - 2000;
+				light.shadow.camera.right = 2000;
+				light.shadow.camera.near = 1200;
+				light.shadow.camera.far = 2500;
+				light.shadow.bias = 0.0001;
 
-            light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
-            light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;
+				light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
+				light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;
 
-            scene.add( light );
+				scene.add( light );
 
-            createHUD();
-            createScene();
+				createHUD();
+				createScene();
 
-            // RENDERER
+				// RENDERER
 
-            renderer = new THREE.WebGLRenderer( { antialias: true } );
-            renderer.setPixelRatio( window.devicePixelRatio );
-            renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-            renderer.setAnimationLoop( animate );
-            container.appendChild( renderer.domElement );
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+				renderer.setAnimationLoop( animate );
+				container.appendChild( renderer.domElement );
 
-            renderer.autoClear = false;
+				renderer.autoClear = false;
 
-            //
+				//
 
-            renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.PCFShadowMap;
+				renderer.shadowMap.enabled = true;
+				renderer.shadowMap.type = THREE.PCFShadowMap;
 
-            // CONTROLS
+				// CONTROLS
 
-            controls = new FirstPersonControls( camera, renderer.domElement );
+				controls = new FirstPersonControls( camera, renderer.domElement );
 
-            controls.lookSpeed = 0.0125;
-            controls.movementSpeed = 500;
-            controls.lookVertical = true;
+				controls.lookSpeed = 0.0125;
+				controls.movementSpeed = 500;
+				controls.lookVertical = true;
 
-            controls.lookAt( scene.position );
+				controls.lookAt( scene.position );
 
-            // STATS
+				// STATS
 
-            stats = new Stats();
-            //container.appendChild( stats.dom );
+				stats = new Stats();
+				//container.appendChild( stats.dom );
 
-            //
+				//
 
-            window.addEventListener( 'resize', onWindowResize );
-            window.addEventListener( 'keydown', onKeyDown );
+				window.addEventListener( 'resize', onWindowResize );
+				window.addEventListener( 'keydown', onKeyDown );
 
-        }
+			}
 
-        function onWindowResize() {
+			function onWindowResize() {
 
-            SCREEN_WIDTH = window.innerWidth;
-            SCREEN_HEIGHT = window.innerHeight;
+				SCREEN_WIDTH = window.innerWidth;
+				SCREEN_HEIGHT = window.innerHeight;
 
-            camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
-            camera.updateProjectionMatrix();
+				camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+				camera.updateProjectionMatrix();
 
-            renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
 
-            controls.handleResize();
+				controls.handleResize();
 
-        }
+			}
 
-        function onKeyDown( event ) {
+			function onKeyDown( event ) {
 
-            switch ( event.keyCode ) {
+				switch ( event.keyCode ) {
 
-                case 84:    /*t*/
-                    showHUD = ! showHUD;
-                    break;
+					case 84:	/*t*/
+						showHUD = ! showHUD;
+						break;
 
-            }
+				}
 
-        }
+			}
 
-        function createHUD() {
+			function createHUD() {
 
-            lightShadowMapViewer = new ShadowMapViewer( light );
-            lightShadowMapViewer.position.x = 10;
-            lightShadowMapViewer.position.y = SCREEN_HEIGHT - ( SHADOW_MAP_HEIGHT / 4 ) - 10;
-            lightShadowMapViewer.size.width = SHADOW_MAP_WIDTH / 4;
-            lightShadowMapViewer.size.height = SHADOW_MAP_HEIGHT / 4;
-            lightShadowMapViewer.update();
+				lightShadowMapViewer = new ShadowMapViewer( light );
+				lightShadowMapViewer.position.x = 10;
+				lightShadowMapViewer.position.y = SCREEN_HEIGHT - ( SHADOW_MAP_HEIGHT / 4 ) - 10;
+				lightShadowMapViewer.size.width = SHADOW_MAP_WIDTH / 4;
+				lightShadowMapViewer.size.height = SHADOW_MAP_HEIGHT / 4;
+				lightShadowMapViewer.update();
 
-        }
+			}
 
-        function createScene( ) {
+			function createScene( ) {
 
-            // GROUND
+				// GROUND
 
-            const geometry = new THREE.PlaneGeometry( 100, 100 );
-            const planeMaterial = new THREE.MeshPhongMaterial( { color: 0xffdd99 } );
+				const geometry = new THREE.PlaneGeometry( 100, 100 );
+				const planeMaterial = new THREE.MeshPhongMaterial( { color: 0xffdd99 } );
 
-            const ground = new THREE.Mesh( geometry, planeMaterial );
+				const ground = new THREE.Mesh( geometry, planeMaterial );
 
-            ground.position.set( 0, FLOOR, 0 );
-            ground.rotation.x = - Math.PI / 2;
-            ground.scale.set( 100, 100, 100 );
+				ground.position.set( 0, FLOOR, 0 );
+				ground.rotation.x = - Math.PI / 2;
+				ground.scale.set( 100, 100, 100 );
 
-            ground.castShadow = false;
-            ground.receiveShadow = true;
+				ground.castShadow = false;
+				ground.receiveShadow = true;
 
-            scene.add( ground );
+				scene.add( ground );
 
-            // TEXT
+				// TEXT
 
-            const loader = new FontLoader();
-            loader.load( 'helvetiker_bold.typeface.json', function ( font ) {
+				const loader = new FontLoader();
+				loader.load( 'helvetiker_bold.typeface.json', function ( font ) {
 
-                const textGeo = new TextGeometry( 'BLU', {
+					const textGeo = new TextGeometry( 'BLU', {
 
-                    font: font,
+						font: font,
 
-                    size: 200,
-                    depth: 50,
-                    curveSegments: 12,
+						size: 200,
+						depth: 50,
+						curveSegments: 12,
 
-                    bevelThickness: 2,
-                    bevelSize: 5,
-                    bevelEnabled: true
+						bevelThickness: 2,
+						bevelSize: 5,
+						bevelEnabled: true
 
-                } );
+					} );
 
-                textGeo.computeBoundingBox();
-                const centerOffset = - 0.5 * ( textGeo.boundingBox.max.x - textGeo.boundingBox.min.x );
+					textGeo.computeBoundingBox();
+					const centerOffset = - 0.5 * ( textGeo.boundingBox.max.x - textGeo.boundingBox.min.x );
 
-                const textMaterial = new THREE.MeshPhongMaterial( { color: 0xff0000, specular: 0xffffff } );
+					const textMaterial = new THREE.MeshPhongMaterial( { color: 0xff0000, specular: 0xffffff } );
 
-                const mesh = new THREE.Mesh( textGeo, textMaterial );
-                mesh.position.x = centerOffset;
-                mesh.position.y = FLOOR + 67;
+					const mesh = new THREE.Mesh( textGeo, textMaterial );
+					mesh.position.x = centerOffset;
+					mesh.position.y = FLOOR + 67;
 
-                mesh.castShadow = true;
-                mesh.receiveShadow = true;
+					mesh.castShadow = true;
+					mesh.receiveShadow = true;
 
-                scene.add( mesh );
+					scene.add( mesh );
 
-            } );
+				} );
 
-            // CUBES
+				// CUBES
 
-            const cubes1 = new THREE.Mesh( new THREE.BoxGeometry( 100, 100, 100 ), new THREE.MeshPhongMaterial( { color: 0xff0000 } ) );
-            cubes1.castShadow = true;
-            cubes1.receiveShadow = true;
-            cubes1.position.set( 0, FLOOR, 0 );
-            cubes1.rotation.x = 0.5;
-            cubes1.rotation.y = 0.2;
-            scene.add( cubes1 );
+				const cubes1 = new THREE.Mesh( new THREE.BoxGeometry( 1500, 220, 150 ), planeMaterial );
 
-            const cubes2 = new THREE.Mesh( new THREE.BoxGeometry( 250, 250, 250 ), new THREE.MeshPhongMaterial( { color: 0x00ff00 } ) );
-            cubes2.castShadow = true;
-            cubes2.receiveShadow = true;
-            cubes2.position.set( 400, FLOOR, 200 );
-            cubes2.rotation.x = 0.5;
-            cubes2.rotation.y = - 0.5;
-            scene.add( cubes2 );
+				cubes1.position.y = FLOOR - 50;
+				cubes1.position.z = 20;
 
-            // GLTF LOADER
+				cubes1.castShadow = true;
+				cubes1.receiveShadow = true;
 
-            const loader2 = new GLTFLoader();
-            loader2.load( 'suzanne.glb', function ( gltf ) {
+				scene.add( cubes1 );
 
-                const mesh = gltf.scene.children[ 0 ];
+				const cubes2 = new THREE.Mesh( new THREE.BoxGeometry( 1600, 170, 250 ), planeMaterial );
 
-                mesh.scale.set( 300, 300, 300 );
-                mesh.position.set( - 600, - 400, 0 );
-                mesh.rotation.y = 0.5;
-                mesh.castShadow = true;
-                mesh.receiveShadow = true;
+				cubes2.position.y = FLOOR - 50;
+				cubes2.position.z = 20;
 
-                scene.add( mesh );
+				cubes2.castShadow = true;
+				cubes2.receiveShadow = true;
 
-            } );
+				scene.add( cubes2 );
 
-        }
+				// MORPHS
 
-        //
+				mixer = new THREE.AnimationMixer( scene );
 
-        function animate() {
+				function addMorph( mesh, clip, speed, duration, x, y, z, fudgeColor ) {
 
-            requestAnimationFrame( animate );
+					mesh = mesh.clone();
+					mesh.material = mesh.material.clone();
 
-            render();
-            stats.update();
+					if ( fudgeColor ) {
 
-        }
+						mesh.material.color.offsetHSL( 0, Math.random() * 0.5 - 0.25, Math.random() * 0.5 - 0.25 );
 
-        function render() {
+					}
 
-            controls.update( clock.getDelta() );
-            renderer.clear();
+					mesh.speed = speed;
 
-            renderer.render( scene, camera );
+					mixer.clipAction( clip, mesh ).
+						setDuration( duration ).
+					// to shift the playback out of phase:
+						startAt( - duration * Math.random() ).
+						play();
 
-            if ( showHUD ) {
+					mesh.position.set( x, y, z );
+					mesh.rotation.y = Math.PI / 2;
 
-                lightShadowMapViewer.render( renderer );
+					mesh.castShadow = true;
+					mesh.receiveShadow = true;
 
-            }
+					scene.add( mesh );
 
-        }
+					morphs.push( mesh );
 
-    </script>
+				}
+
+				const gltfloader = new GLTFLoader();
+
+				gltfloader.load( 'Horse.glb', function ( gltf ) {
+
+					const mesh = gltf.scene.children[ 0 ];
+
+					const clip = gltf.animations[ 0 ];
+
+					addMorph( mesh, clip, 550, 1, 100 - Math.random() * 1000, FLOOR, 300, true );
+					addMorph( mesh, clip, 550, 1, 100 - Math.random() * 1000, FLOOR, 450, true );
+					addMorph( mesh, clip, 550, 1, 100 - Math.random() * 1000, FLOOR, 600, true );
+
+					addMorph( mesh, clip, 550, 1, 100 - Math.random() * 1000, FLOOR, - 300, true );
+					addMorph( mesh, clip, 550, 1, 100 - Math.random() * 1000, FLOOR, - 450, true );
+					addMorph( mesh, clip, 550, 1, 100 - Math.random() * 1000, FLOOR, - 600, true );
+
+				} );
+
+				gltfloader.load( 'Flamingo.glb', function ( gltf ) {
+
+					const mesh = gltf.scene.children[ 0 ];
+					const clip = gltf.animations[ 0 ];
+
+					addMorph( mesh, clip, 500, 1, 500 - Math.random() * 500, FLOOR + 350, 40 );
+
+				} );
+
+				gltfloader.load( 'Stork.glb', function ( gltf ) {
+
+					const mesh = gltf.scene.children[ 0 ];
+					const clip = gltf.animations[ 0 ];
+
+					addMorph( mesh, clip, 350, 1, 500 - Math.random() * 500, FLOOR + 350, 340 );
+
+				} );
+
+				gltfloader.load( 'Parrot.glb', function ( gltf ) {
+
+					const mesh = gltf.scene.children[ 0 ];
+					const clip = gltf.animations[ 0 ];
+
+					addMorph( mesh, clip, 450, 0.5, 500 - Math.random() * 500, FLOOR + 300, 700 );
+
+				} );
+
+			}
+
+			function animate() {
+
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				const delta = clock.getDelta();
+
+				mixer.update( delta );
+
+				for ( let i = 0; i < morphs.length; i ++ ) {
+
+					const morph = morphs[ i ];
+
+					morph.position.x += morph.speed * delta;
+
+					if ( morph.position.x > 2000 ) {
+
+						morph.position.x = - 1000 - Math.random() * 500;
+
+					}
+
+				}
+
+				controls.update( delta );
+
+				renderer.clear();
+				renderer.render( scene, camera );
+
+				// Render debug HUD with shadow map
+
+				if ( showHUD ) {
+
+					lightShadowMapViewer.render( renderer );
+
+				}
+
+			}
+
+		</script>
 
     <div class="logo-container">
-        <img src="https://via.placeholder.com/150x80.png?text=Logo" alt="Logo">
-        <h1>Revolutionary Technologies</h1>
+        <img src="https://raw.githubusercontent.com/Shilpachimad/Blu/main/blulogo.JPG" alt="Blu Logo">
     </div>
+
+    <h1> Welcome to blu. Services Portal vs. blu. Ticket System </h1>
+    
+   <h2 style="margin-top: 30px;">MTD Tickets</h2> 
 
     <div class="button-container">
-        <button class="tablink attractive-red">Button 1</button>
-        <button class="tablink attractive-yellow">Button 2</button>
-        <button class="tablink attractive-green">Button 3</button>
-        <button class="tablink attractive-blue">Button 4</button>
-        <button class="tablink attractive-orange">Button 5</button>
-        <button class="tablink attractive-pink">Button 6</button>
-        <button class="tablink attractive-purple">Button 7</button>
-        <button class="tablink attractive-cyan">Button 8</button>
-    </div>
+        <button class="tablink attractive-red"  id="Snowflake Ticket" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/4/create/11','_blank');">Snowflake Ticket</button> 
+        <button class="tablink attractive-yellow" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/18','_blank');">Segment Distribution Request Ticket</button> 
+        <button class="tablink attractive-green" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/17','_blank');">Segment Distribution Delay Inquiry Ticket</button> 
+        <button class="tablink attractive-blue" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/10','_blank');">Custom Segment Request Ticket</button> 
+        <button class="tablink attractive-orange" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/5','_blank');">blu. Access Request Ticket</button> 
+      <button class="tablink attractive-pink" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/36','_blank');">blu. Error Issue Ticket</button>
+        <button class="tablink attractive-purple" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/15','_blank');">Pixel Request Form Ticket</button>   
+   </div>
 
+    <h2 style="margin-top: 30px;">Service Desk Tickets</h2>
+       <div class="button-container right-align">
+  <button class="tablink attractive-cyan" id="Tableau Ticket" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Tableau Ticket</button>
+        <button class="tablink attractive-orange" id="Github Ticket" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Github Ticket</button>
+        <button class="tablink attractive-green" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">VPN / VDO Forti Client Setup Ticket</button>
+        <button class="tablink attractive-blue" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">BlueDot issue Ticket </button>
+        <button class="tablink attractive-purple" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Client Valut Ticket</button>
+        <button class="tablink attractive-cyan" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Software update Ticket</button>
+        <button class="tablink attractive-red" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Databricks Ticket </button>
+        <button class="tablink attractive-yellow" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">TAP Ticket</button>
+        <button class="tablink attractive-pink" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Microsoft Azure Ticket</button>
+
+    </div>
+<h2 style="margin-top: 30px;">blu. Datastore</h2>
 </body>
 </html>
