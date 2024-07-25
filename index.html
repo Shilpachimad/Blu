@@ -443,37 +443,147 @@
 
 		</script>
 
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #E0EBFF; /* Matching color with logo */
+            text-align: center;
+            color: #1F3A93; /* Navy Blue */
+        }
+
+        h1 {
+            color: #1F3A93; /* Navy Blue */
+            text-shadow: 2px 2px #CCCCCC;
+            margin-top: 20px;
+        }
+
+        h2 {
+            color: #1F3A93; /* Navy Blue */
+            text-align: left;
+            margin-left: 20px;
+            text-shadow: 1px 1px #CCCCCC;
+        }
+
+        .section {
+            background: #FFFFFF;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; /* Align buttons to the left */
+            gap: 10px;
+            margin-top: 20px;
+            margin-left: 20px; /* Add margin for spacing */
+        }
+
+        .tablink {
+            border: none;  
+            color: white;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: auto; /* Adjusted width to fit text */
+            height: auto; /* Adjusted height to fit text */
+            border-radius: 20px; /* Round the corners */
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .tablink:hover {
+            transform: scale(1.05);
+        }
+
+        .small-button {
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .logo-container img {
+            width: 100px; /* Adjusted width for smaller logo */
+            height: auto;
+        }
+
+        /* Dark Attractive Colors */
+        .attractive-red { background-color: #D32F2F; }
+        .attractive-yellow { background-color: #FBC02D; }
+        .attractive-green { background-color: #388E3C; }
+        .attractive-blue { background-color: #1976D2; }
+        .attractive-orange { background-color: #F57C00; }
+        .attractive-pink { background-color: #C2185B; }
+        .attractive-purple { background-color: #7B1FA2; }
+        .attractive-cyan { background-color: #0097A7; }
+    </style>
+</head>
+<body>
+
     <div class="logo-container">
         <img src="https://raw.githubusercontent.com/Shilpachimad/Blu/main/blulogo.JPG" alt="Blu Logo">
     </div>
 
     <h1> Welcome to blu. Services Portal vs. blu. Ticket System </h1>
-    
-   <h2 style="margin-top: 30px;">MTD Tickets</h2> 
 
-    <div class="button-container">
-        <button class="tablink attractive-red"  id="Snowflake Ticket" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/4/create/11','_blank');">Snowflake Ticket</button> 
-        <button class="tablink attractive-yellow" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/18','_blank');">Segment Distribution Request Ticket</button> 
-        <button class="tablink attractive-green" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/17','_blank');">Segment Distribution Delay Inquiry Ticket</button> 
-        <button class="tablink attractive-blue" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/10','_blank');">Custom Segment Request Ticket</button> 
-        <button class="tablink attractive-orange" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/5','_blank');">blu. Access Request Ticket</button> 
-      <button class="tablink attractive-pink" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/36','_blank');">blu. Error Issue Ticket</button>
-        <button class="tablink attractive-purple" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/15','_blank');">Pixel Request Form Ticket</button>   
-   </div>
-
-    <h2 style="margin-top: 30px;">Service Desk Tickets</h2>
-       <div class="button-container right-align">
-  <button class="tablink attractive-cyan" id="Tableau Ticket" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Tableau Ticket</button>
-        <button class="tablink attractive-orange" id="Github Ticket" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Github Ticket</button>
-        <button class="tablink attractive-green" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">VPN / VDO Forti Client Setup Ticket</button>
-        <button class="tablink attractive-blue" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">BlueDot issue Ticket </button>
-        <button class="tablink attractive-purple" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Client Valut Ticket</button>
-        <button class="tablink attractive-cyan" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Software update Ticket</button>
-        <button class="tablink attractive-red" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Databricks Ticket </button>
-        <button class="tablink attractive-yellow" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">TAP Ticket</button>
-        <button class="tablink attractive-pink" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Microsoft Azure Ticket</button>
-
+    <div class="section">
+        <h2 style="margin-top: 0;">MTD Tickets</h2>
+        <div class="button-container">
+            <button class="tablink attractive-red" id="Snowflake Ticket" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/4/create/11','_blank');">Snowflake Ticket</button> 
+            <button class="tablink attractive-yellow small-button" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/18','_blank');">Segment Distribution Request Ticket</button> 
+            <button class="tablink attractive-green" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/17','_blank');">Segment Distribution Delay Inquiry Ticket</button> 
+            <button class="tablink attractive-blue small-button" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/10','_blank');">Custom Segment Request Ticket</button> 
+            <button class="tablink attractive-orange" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/5','_blank');">blu. Access Request Ticket</button> 
+            <button class="tablink attractive-pink small-button" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/36','_blank');">blu. Error Issue Ticket</button>
+            <button class="tablink attractive-purple" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/15','_blank');">Pixel Request Form Ticket</button>   
+        </div>
     </div>
-<h2 style="margin-top: 30px;">blu. Datastore</h2>
-</body>
-</html>
+
+    <div class="section">
+        <h2 style="margin-top: 0;">Service Desk Tickets</h2>
+        <div class="button-container">
+            <button class="tablink attractive-cyan" id="Tableau Ticket" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Tableau Ticket</button>
+            <button class="tablink attractive-orange small-button" id="Github Ticket" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Github Ticket</button>
+            <button class="tablink attractive-green" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">VPN / VDO Forti Client Setup Ticket</button>
+            <button class="tablink attractive-blue small-button" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">BlueDot Issue Ticket</button>
+            <button class="tablink attractive-purple" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Client Vault Ticket</button>
+            <button class="tablink attractive-cyan" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Software Update Ticket</button>
+            <button class="tablink attractive-red" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Databricks Ticket</button>
+            <button class="tablink attractive-yellow small-button" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">TAP Ticket</button>
+            <button class="tablink attractive-pink" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Microsoft Azure Ticket</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 style="margin-top: 0;">blu. Quick Links</h2>
+        <div class="button-container">
+            <button class="tablink attractive-orange small-button" onclick="window.open('https://adb-4991611886008463.3.azuredatabricks.net/login.html?o=4991611886008463','_blank');">DataBricks</button>
+            <button class="tablink attractive-purple" onclick="window.open('https://blusupport.atlassian.net/jira/software/c/projects/BSS/boards/1','_blank');">Jira</button>
+             <button class="tablink attractive-red" onclick="window.open('https://sso.online.tableau.com/public/idp/SSO','_blank');">Tableau</button>
+        <button class="tablink attractive-yellow" onclick="window.open('https://truaudience.tru-signal.com/Login.html','_blank');">Transunion</button>
+        </div>
+	</div>
+
+  <div class="section">
+	<div class="section">
+        <h2 style="margin-top: 0;">blu. Datastore</h2>
+	</div>
+   </div>
