@@ -29,467 +29,6 @@
             text-shadow: 1px 1px #CCCCCC;
         }
 
-        .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start; /* Align buttons to the left */
-            gap: 10px;
-            margin-top: 20px;
-            margin-left: 20px; /* Add margin for spacing */
-        }
-.tooltip .tooltiptext {
-            visibility: hidden;
-            width: 160px;
-            background-color: #555;
-            color: #fff;
-            text-align: center;
-            border-radius: 5px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%; /* Position the tooltip above the text */
-            left: 50%;
-            margin-left: -80px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-        .tablink {
-            border: none;  
-            color: white;
-            padding: 15px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            cursor: pointer;
-            width: auto; /* Adjusted width to fit text */
-            height: auto; /* Adjusted height to fit text */
-            border-radius: 20px; /* Round the corners */
-            transition: background-color 0.3s, transform 0.3s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .tablink:hover {
-            transform: scale(1.05);
-        }
-
-        .logo-container {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 10px;
-        }
-
-        .logo-container img {
-            width: 100px; /* Adjusted width for smaller logo */
-            height: auto;
-        }
-
-        /* Attractive Colors */
-        .attractive-red { background-color: #FF5722; }
-        .attractive-yellow { background-color: #FFC107; }
-        .attractive-green { background-color: #4CAF50; }
-        .attractive-blue { background-color: #2196F3; }
-        .attractive-orange { background-color: #FF9800; }
-        .attractive-pink { background-color: #E91E63; }
-        .attractive-purple { background-color: #9C27B0; }
-        .attractive-cyan { background-color: #00BCD4; }
-    </style>
-</head>
-<body>
-     <script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
-    }
-  }
-</script>
-
-
-		<script type="module">
-
-			import * as THREE from 'three';
-
-			import Stats from 'three/addons/libs/stats.module.js';
-
-			import { FirstPersonControls } from 'three/addons/controls/FirstPersonControls.js';
-			import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-			import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-			import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-			import { ShadowMapViewer } from 'three/addons/utils/ShadowMapViewer.js';
-
-			const SHADOW_MAP_WIDTH = 2048, SHADOW_MAP_HEIGHT = 1024;
-
-			let SCREEN_WIDTH = window.innerWidth;
-			let SCREEN_HEIGHT = window.innerHeight;
-			const FLOOR = - 250;
-
-			let camera, controls, scene, renderer;
-			let container, stats;
-
-			const NEAR = 10, FAR = 3000;
-
-			let mixer;
-
-			const morphs = [];
-
-			let light;
-			let lightShadowMapViewer;
-
-			const clock = new THREE.Clock();
-
-			let showHUD = false;
-
-			init();
-
-			function init() {
-
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
-
-				// CAMERA
-
-				camera = new THREE.PerspectiveCamera( 23, SCREEN_WIDTH / SCREEN_HEIGHT, NEAR, FAR );
-				camera.position.set( 700, 50, 1900 );
-
-				// SCENE
-
-				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0x59472b );
-				scene.fog = new THREE.Fog( 0x59472b, 1000, FAR );
-
-				// LIGHTS
-
-				const ambient = new THREE.AmbientLight( 0xffffff );
-				scene.add( ambient );
-
-				light = new THREE.DirectionalLight( 0xffffff, 3 );
-				light.position.set( 0, 1500, 1000 );
-				light.castShadow = true;
-				light.shadow.camera.top = 2000;
-				light.shadow.camera.bottom = - 2000;
-				light.shadow.camera.left = - 2000;
-				light.shadow.camera.right = 2000;
-				light.shadow.camera.near = 1200;
-				light.shadow.camera.far = 2500;
-				light.shadow.bias = 0.0001;
-
-				light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
-				light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;
-
-				scene.add( light );
-
-				createHUD();
-				createScene();
-
-				// RENDERER
-
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-				renderer.setAnimationLoop( animate );
-				container.appendChild( renderer.domElement );
-
-				renderer.autoClear = false;
-
-				//
-
-				renderer.shadowMap.enabled = true;
-				renderer.shadowMap.type = THREE.PCFShadowMap;
-
-				// CONTROLS
-
-				controls = new FirstPersonControls( camera, renderer.domElement );
-
-				controls.lookSpeed = 0.0125;
-				controls.movementSpeed = 500;
-				controls.lookVertical = true;
-
-				controls.lookAt( scene.position );
-
-				// STATS
-
-				stats = new Stats();
-				//container.appendChild( stats.dom );
-
-				//
-
-				window.addEventListener( 'resize', onWindowResize );
-				window.addEventListener( 'keydown', onKeyDown );
-
-			}
-
-			function onWindowResize() {
-
-				SCREEN_WIDTH = window.innerWidth;
-				SCREEN_HEIGHT = window.innerHeight;
-
-				camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
-				camera.updateProjectionMatrix();
-
-				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-
-				controls.handleResize();
-
-			}
-
-			function onKeyDown( event ) {
-
-				switch ( event.keyCode ) {
-
-					case 84:	/*t*/
-						showHUD = ! showHUD;
-						break;
-
-				}
-
-			}
-
-			function createHUD() {
-
-				lightShadowMapViewer = new ShadowMapViewer( light );
-				lightShadowMapViewer.position.x = 10;
-				lightShadowMapViewer.position.y = SCREEN_HEIGHT - ( SHADOW_MAP_HEIGHT / 4 ) - 10;
-				lightShadowMapViewer.size.width = SHADOW_MAP_WIDTH / 4;
-				lightShadowMapViewer.size.height = SHADOW_MAP_HEIGHT / 4;
-				lightShadowMapViewer.update();
-
-			}
-
-			function createScene( ) {
-
-				// GROUND
-
-				const geometry = new THREE.PlaneGeometry( 100, 100 );
-				const planeMaterial = new THREE.MeshPhongMaterial( { color: 0xffdd99 } );
-
-				const ground = new THREE.Mesh( geometry, planeMaterial );
-
-				ground.position.set( 0, FLOOR, 0 );
-				ground.rotation.x = - Math.PI / 2;
-				ground.scale.set( 100, 100, 100 );
-
-				ground.castShadow = false;
-				ground.receiveShadow = true;
-
-				scene.add( ground );
-
-				// TEXT
-
-				const loader = new FontLoader();
-				loader.load( 'helvetiker_bold.typeface.json', function ( font ) {
-
-					const textGeo = new TextGeometry( 'Blu.', {
-
-						font: font,
-
-						size: 200,
-						depth: 50,
-						curveSegments: 12,
-
-						bevelThickness: 2,
-						bevelSize: 5,
-						bevelEnabled: true
-
-					} );
-
-					textGeo.computeBoundingBox();
-					const centerOffset = - 0.5 * ( textGeo.boundingBox.max.x - textGeo.boundingBox.min.x );
-
-					const textMaterial = new THREE.MeshPhongMaterial( { color: 0xff0000, specular: 0xffffff } );
-
-					const mesh = new THREE.Mesh( textGeo, textMaterial );
-					mesh.position.x = centerOffset;
-					mesh.position.y = FLOOR + 67;
-
-					mesh.castShadow = true;
-					mesh.receiveShadow = true;
-
-					scene.add( mesh );
-
-				} );
-
-				// CUBES
-
-				const cubes1 = new THREE.Mesh( new THREE.BoxGeometry( 1500, 220, 150 ), planeMaterial );
-
-				cubes1.position.y = FLOOR - 50;
-				cubes1.position.z = 20;
-
-				cubes1.castShadow = true;
-				cubes1.receiveShadow = true;
-
-				scene.add( cubes1 );
-
-				const cubes2 = new THREE.Mesh( new THREE.BoxGeometry( 1600, 170, 250 ), planeMaterial );
-
-				cubes2.position.y = FLOOR - 50;
-				cubes2.position.z = 20;
-
-				cubes2.castShadow = true;
-				cubes2.receiveShadow = true;
-
-				scene.add( cubes2 );
-
-				// MORPHS
-
-				mixer = new THREE.AnimationMixer( scene );
-
-				function addMorph( mesh, clip, speed, duration, x, y, z, fudgeColor ) {
-
-					mesh = mesh.clone();
-					mesh.material = mesh.material.clone();
-
-					if ( fudgeColor ) {
-
-						mesh.material.color.offsetHSL( 0, Math.random() * 0.5 - 0.25, Math.random() * 0.5 - 0.25 );
-
-					}
-
-					mesh.speed = speed;
-
-					mixer.clipAction( clip, mesh ).
-						setDuration( duration ).
-					// to shift the playback out of phase:
-						startAt( - duration * Math.random() ).
-						play();
-
-					mesh.position.set( x, y, z );
-					mesh.rotation.y = Math.PI / 2;
-
-					mesh.castShadow = true;
-					mesh.receiveShadow = true;
-
-					scene.add( mesh );
-
-					morphs.push( mesh );
-
-				}
-
-				const gltfloader = new GLTFLoader();
-
-				gltfloader.load( 'Horse.glb', function ( gltf ) {
-
-					const mesh = gltf.scene.children[ 0 ];
-
-					const clip = gltf.animations[ 0 ];
-
-					addMorph( mesh, clip, 550, 1, 100 - Math.random() * 1000, FLOOR, 300, true );
-					addMorph( mesh, clip, 550, 1, 100 - Math.random() * 1000, FLOOR, 450, true );
-					addMorph( mesh, clip, 550, 1, 100 - Math.random() * 1000, FLOOR, 600, true );
-
-					addMorph( mesh, clip, 550, 1, 100 - Math.random() * 1000, FLOOR, - 300, true );
-					addMorph( mesh, clip, 550, 1, 100 - Math.random() * 1000, FLOOR, - 450, true );
-					addMorph( mesh, clip, 550, 1, 100 - Math.random() * 1000, FLOOR, - 600, true );
-
-				} );
-
-				gltfloader.load( 'Flamingo.glb', function ( gltf ) {
-
-					const mesh = gltf.scene.children[ 0 ];
-					const clip = gltf.animations[ 0 ];
-
-					addMorph( mesh, clip, 500, 1, 500 - Math.random() * 500, FLOOR + 350, 40 );
-
-				} );
-
-				gltfloader.load( 'Stork.glb', function ( gltf ) {
-
-					const mesh = gltf.scene.children[ 0 ];
-					const clip = gltf.animations[ 0 ];
-
-					addMorph( mesh, clip, 350, 1, 500 - Math.random() * 500, FLOOR + 350, 340 );
-
-				} );
-
-				gltfloader.load( 'Parrot.glb', function ( gltf ) {
-
-					const mesh = gltf.scene.children[ 0 ];
-					const clip = gltf.animations[ 0 ];
-
-					addMorph( mesh, clip, 450, 0.5, 500 - Math.random() * 500, FLOOR + 300, 700 );
-
-				} );
-
-			}
-
-			function animate() {
-
-				render();
-				stats.update();
-
-			}
-
-			function render() {
-
-				const delta = clock.getDelta();
-
-				mixer.update( delta );
-
-				for ( let i = 0; i < morphs.length; i ++ ) {
-
-					const morph = morphs[ i ];
-
-					morph.position.x += morph.speed * delta;
-
-					if ( morph.position.x > 2000 ) {
-
-						morph.position.x = - 1000 - Math.random() * 500;
-
-					}
-
-				}
-
-				controls.update( delta );
-
-				renderer.clear();
-				renderer.render( scene, camera );
-
-				// Render debug HUD with shadow map
-
-				if ( showHUD ) {
-
-					lightShadowMapViewer.render( renderer );
-
-				}
-
-			}
-
-		</script>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #E0EBFF; /* Matching color with logo */
-            text-align: center;
-            color: #1F3A93; /* Navy Blue */
-        }
-
-        h1 {
-            color: #1F3A93; /* Navy Blue */
-            text-shadow: 2px 2px #CCCCCC;
-            margin-top: 20px;
-        }
-
-        h2 {
-            color: #1F3A93; /* Navy Blue */
-            text-align: left;
-            margin-left: 20px;
-            text-shadow: 1px 1px #CCCCCC;
-        }
-
         .section {
             background: #FFFFFF;
             margin: 20px;
@@ -554,6 +93,35 @@
         .attractive-pink { background-color: #C2185B; }
         .attractive-purple { background-color: #7B1FA2; }
         .attractive-cyan { background-color: #0097A7; }
+		
+		 /* Tooltip container */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Tooltip text */
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 160px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Position above the button */
+            left: 50%;
+            margin-left: -80px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Show the tooltip text when hovering */
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
     </style>
 </head>
 <body>
@@ -567,46 +135,113 @@
     <div class="section">
         <h2 style="margin-top: 0;">MTD Tickets</h2>
         <div class="button-container">
-	     <div class="tooltip">
-         <button class="tablink attractive-red" id="Snowflake Ticket" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/4/create/11','_blank');">Snowflake Ticket</button> 
-                 <span class="tooltiptext">Snowflake Issue Ticket</span></div>
-	<button class="tablink attractive-yellow small-button" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/18','_blank');">Segment Distribution Request Ticket</button> 
-
-		<button class="tablink attractive-green" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/17','_blank');">Segment Distribution Delay Inquiry Ticket</button> 
-            <button class="tablink attractive-blue small-button" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/10','_blank');">Custom Segment Request Ticket</button> 
+             
+			<div class="tooltip">
+                <button class="tablink attractive-red" id="Snowflake Ticket" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/4/create/11','_blank');">Snowflake Ticket</button>
+                        <span class="tooltiptext">Click to create Snwoflake issues</span>
+            </div>           
+		   
+            <div class="tooltip">
+               <button class="tablink attractive-yellow small-button" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/18','_blank');">Segment Distribution Request Ticket</button> 
+                        <span class="tooltiptext">Click to create Segment Distribution issues</span>
+            </div>  
+			
+            <div class="tooltip">
+              <button class="tablink attractive-green" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/17','_blank');">Segment Distribution Delay Inquiry Ticket</button> 
+                        <span class="tooltiptext">Click to create Segment Distribution Delayed</span>
+            </div>  
+			
+            <div class="tooltip">
+            <button class="tablink attractive-blue small-button" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/10','_blank');">Custom Segment Request Ticket</button>  
+                        <span class="tooltiptext">Click to create Custom Segment Request</span>
+            </div> 
+			 
+            <div class="tooltip">
             <button class="tablink attractive-orange" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/5','_blank');">blu. Access Request Ticket</button> 
-            <button class="tablink attractive-pink small-button" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/36','_blank');">blu. Error Issue Ticket</button>
-            <button class="tablink attractive-purple" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/15','_blank');">Pixel Request Form Ticket</button>   
-        </div>
+                        <span class="tooltiptext">Click to create blu Access Request</span>
+            </div> 
+			
+            <div class="tooltip">
+            <button class="tablink attractive-pink small-button" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/36','_blank');">blu. Error Issue Ticket</button> 
+                        <span class="tooltiptext">Click to create blu erroe issue Request</span>
+            </div> 
+        <div class="tooltip">
+           <button class="tablink attractive-purple" onclick="window.open('https://spirehorizon.atlassian.net/servicedesk/customer/portal/1/group/7/create/15','_blank');">Pixel Request Form Ticket</button>  
+                        <span class="tooltiptext">Click to create Pixel Request Form Request</span>
+            </div> 
+		</div>
     </div>
 
     <div class="section">
         <h2 style="margin-top: 0;">Service Desk Tickets</h2>
         <div class="button-container">
-             <div class="tooltip">
-		<button class="tablink attractive-cyan" id="Tableau Ticket" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Tableau Ticket</button>
-             <span class="tooltiptext">Tableau Issue Ticket</span>
-        </div>
-		<button class="tablink attractive-orange small-button" id="Github Ticket" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Github Ticket</button>
-            <button class="tablink attractive-green" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">VPN / VDO Forti Client Setup Ticket</button>
-            <button class="tablink attractive-blue small-button" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">BlueDot Issue Ticket</button>
-            <button class="tablink attractive-purple" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Client Vault Ticket</button>
-            <button class="tablink attractive-cyan" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Software Update Ticket</button>
-            <button class="tablink attractive-red" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Databricks Ticket</button>
-            <button class="tablink attractive-yellow small-button" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">TAP Ticket</button>
-            <button class="tablink attractive-pink" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Microsoft Azure Ticket</button>
-        </div>
+            <div class="tooltip">
+                <button class="tablink attractive-cyan" id="Tableau Ticket" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">
+                    Tableau Ticket
+                </button>
+                <span class="tooltiptext">Click to create Tableau access</span>
+            </div>
+            <div class="tooltip">
+                <button class="tablink attractive-red small-button" id="Github Ticket" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">
+                    Github Ticket
+                </button>
+                <span class="tooltiptext">Click to create Github access</span>
+            </div>
+            <div class="tooltip">
+                <button class="tablink attractive-green" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">
+                    VPN / VDO Forti Client Setup Ticket
+                </button>
+                <span class="tooltiptext">Click to create VPN access</span>
+            </div>
+            <div class="tooltip">
+                <button class="tablink attractive-blue small-button" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">
+                    BlueDot Issue Ticket
+                </button>
+                <span class="tooltiptext">Report BlueDot issue</span>
+            </div>
+            
+            <div class="tooltip">
+                
+				<button class="tablink attractive-purple" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Client Vault Ticket</button>
+                <span class="tooltiptext">Report Client valut issue</span>
+            </div>
+			
+           
+		   
+		   <div class="tooltip">
+                
+				<button class="tablink attractive-cyan" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Software Update Ticket</button>
+                <span class="tooltiptext">Report Software update ticket</span>
+            </div>
+			
+
+		   <div class="tooltip">
+                
+				<button class="tablink attractive-red" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Databricks Ticket</button>
+                <span class="tooltiptext">Create databricks ticket for any issue</span>
+            </div>
+            
+            <div class="tooltip">
+                
+				<button class="tablink attractive-yellow small-button" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">TAP Ticket</button>
+                <span class="tooltiptext">Create Tap ticket</span>
+            </div>
+			
+			<div class="tooltip">
+                
+				<button class="tablink attractive-pink" onclick="window.open('https://horizonmedia.service-now.com/nexusnow?id=sc_cat_item&sys_id=c291ca3887fca910c2c78408dabb35d0','_blank');">Microsoft Azure Ticket</button>
+                <span class="tooltiptext">Create Microsoft azure ticket</span>
+            </div>
+		</div>
     </div>
 
     <div class="section">
         <h2 style="margin-top: 0;">blu. Quick Links</h2>
         <div class="button-container">
             <button class="tablink attractive-orange small-button" onclick="window.open('https://adb-4991611886008463.3.azuredatabricks.net/login.html?o=4991611886008463','_blank');">DataBricks</button>
-            <button class="tablink attractive-purple" onclick="window.open('https://blusupport.atlassian.net/jira/software/c/projects/BSS/boards/1','_blank');">Jira(MS Board)</button>
-	    <button class="tablink attractive-purple" onclick="window.open('https://blusupport.atlassian.net/jira/software/c/projects/BDEB/boards/7','_blank');">Jira(Data Engg. Board)</button>	           
-		<button class="tablink attractive-purple" onclick="window.open('https://app.snowflake.com/lrfescz/hmimtd/#/streamlit-apps/HORIZON_DEV.BLU_INTELLIGENCEENGINE.DEV_AUDIENCE_MANAGER','_blank');">Audience manager(Streamlit)</button>
+            <button class="tablink attractive-purple" onclick="window.open('https://blusupport.atlassian.net/jira/software/c/projects/BSS/boards/1','_blank');">Jira</button>
              <button class="tablink attractive-red" onclick="window.open('https://sso.online.tableau.com/public/idp/SSO','_blank');">Tableau</button>
-            <button class="tablink attractive-yellow" onclick="window.open('https://truaudience.tru-signal.com/Login.html','_blank');">Transunion</button>
+        <button class="tablink attractive-yellow" onclick="window.open('https://truaudience.tru-signal.com/Login.html','_blank');">Transunion</button>
         </div>
 	</div>
 
@@ -615,3 +250,5 @@
         <h2 style="margin-top: 0;">blu. Datastore</h2>
 	</div>
    </div>
+</body>
+</html>
